@@ -1,5 +1,6 @@
 import { DataSource } from 'typeorm';
-import { User, UserRole } from '../users/users.entity'; 
+import { User, UserRole } from '../users/users.entity';
+import { Brand } from '../brands/brand.entity';
 import * as bcrypt from 'bcrypt';
 import 'dotenv/config';
 
@@ -10,7 +11,7 @@ const AppDataSource = new DataSource({
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  entities: [User],
+  entities: [User, Brand],
   synchronize: true,
 });
 
@@ -29,9 +30,9 @@ async function seed() {
       role: UserRole.ADMIN, 
     });
     await userRepo.save(admin);
-    console.log('✅ Admin user seeded.');
+    console.log('Admin user seeded.');
   } else {
-    console.log('ℹ️ Admin user already exists, skipping.');
+    console.log('Admin user already exists, skipping.');
   }
 
   await AppDataSource.destroy();

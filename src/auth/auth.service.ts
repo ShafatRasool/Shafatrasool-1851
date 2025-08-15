@@ -10,19 +10,19 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
-
-  async signup(
+async signup(
   name: string,
   email: string,
   password: string,
   role: UserRole = UserRole.BRAND,
+  brandId?: number,
 ) {
   const userExists = await this.usersService.findByEmail(email);
   if (userExists) {
     throw new UnauthorizedException('Email already in use');
   }
 
-  const user = await this.usersService.createUser(name, email, password, role);
+  const user = await this.usersService.createUser(name, email, password, role, brandId); 
   const payload = { sub: user.id, email: user.email, role: user.role };
 
   return {
@@ -30,6 +30,7 @@ export class AuthService {
     access_token: this.jwtService.sign(payload),
   };
 }
+
 
 
   async login(email: string, password: string) {

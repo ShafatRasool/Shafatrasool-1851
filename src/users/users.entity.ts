@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
+import { Brand } from '../brands/brand.entity';
 
 export enum UserRole {
   ADMIN = 'ADMIN',
@@ -22,7 +23,12 @@ export class User {
   @Column({
     type: 'enum',
     enum: UserRole,
-    default: UserRole.BRAND,
+    default: UserRole.ADMIN,
   })
   role: UserRole;
+
+  @ManyToOne(() => Brand, brand => brand.users, { nullable: true })
+  @JoinColumn({ name: 'brandId' })
+  brand: Brand;
+
 }
