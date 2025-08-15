@@ -17,8 +17,9 @@ export class AuthController {
     @Body('email') email: string,
     @Body('password') password: string,
     @Body('role') role: UserRole,
+    @Body('brandId') brandId?: number,
   ) {
-    return this.authService.signup(name, email, password, role);
+    return this.authService.signup(name, email, password, role, brandId);
   }
 
   @Post('login')
